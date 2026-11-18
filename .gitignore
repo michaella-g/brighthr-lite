@@ -4,3 +4,4 @@ playwright/.auth/
 test-results/
 playwright-report/
 .DS_Store
+.last-run.json
