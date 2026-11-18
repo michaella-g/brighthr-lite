@@ -4,4 +4,3 @@ playwright/.auth/
 test-results/
 playwright-report/
 .DS_Store
-user.json

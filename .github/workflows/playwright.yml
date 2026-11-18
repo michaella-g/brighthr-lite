@@ -1,0 +1,46 @@
+name: Playwright tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch: # allows a manual run from the Actions tab
+
+# The tests write to a shared sandbox account, so don't let two runs overlap
+concurrency:
+  group: playwright-sandbox
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright tests
+        run: npx playwright test
+        env:
+          BRIGHTHR_EMAIL: ${{ secrets.BRIGHTHR_EMAIL }}
+          BRIGHTHR_PASSWORD: ${{ secrets.BRIGHTHR_PASSWORD }}
+
+      - name: Upload HTML report
+        if: ${{ !cancelled() }} # keep the report when tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
