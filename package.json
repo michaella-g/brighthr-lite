@@ -1,0 +1,13 @@
+{
+  "name": "brighthr-lite",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@types/node": "^26.6.6",
+    "dotenv": "^18.0.10"
+  }
+}
